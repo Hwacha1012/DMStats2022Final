@@ -1,1 +1,3 @@
-# dmstats22-final-assignment
+# Final Datamatch Stats Assignment
+
+Look at `main.js` for the instructions!
