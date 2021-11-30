@@ -81,21 +81,44 @@ Object.defineProperty(window, 'data', {
 
 // Step 1: Define an SVG drawing area with our margin conventions. Append
 // the drawing area to the div with id chart-area2
+var margin = {top: 30, right: 30, left: 30, bottom: 50};
+svgSchools = d3.select("#chart-area2").append("svg")
+    .attr("width", 800 + margin.left + margin.right)
+    .attr("height", 200 + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
 // Step 2: Create scales for x and y.
 // Hint: You should use scaleBand() for x. What should you use for y?
+// var xExtent = d3.extent(data, function(d) { return d.songs; }),
+//    xRange = xExtent[1] - xExtent[0],
+//    yExtent = d3.extent(data, function(d) { return d.streams_in_mils; }),
+//    yRange = yExtent[1] - yExtent[0];
+
+//var padding = 20;
+var houseScale = d3.scaleBand();
+    //.domain([xExtent[0] - (xRange * .1), xExtent[1] + (xRange * .1)])
+    //.range([padding, width-padding]);
+var yScale = d3.scaleLinear();
+    //.domain([yExtent[0] - (yRange * .1), yExtent[1] + (yRange * .1)])
+    //.range([padding, height-padding]);
 
 
 function loadData() {
     d3.csv("data/house-signups.csv", function(error, csv) {
 
         // Step 3: Get the data ready: change numeric fields to being numbers!
+        csv.forEach(function(d){
 
+            d.population = +d.population;
+            d.percent_signup = +d.percent_signup;
+        });
+        //return(data);
 
         // Store csv data in global variable
         data = csv;
-
+        console.log(data)
         // updateSchoolsVisualization gets automatically called within the data = csv call;
         // basically(whenever the data is set to a value using = operator);
         // see the definition above: Object.defineProperty(window, 'data', { ...
