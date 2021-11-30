@@ -20,10 +20,35 @@ function updateVisualization(orders) {
     // The color of the circle should be brown for coffee orders and green for tea
     // Radius should vary with the price
 
-    // Step 2: Delete elements that have been removed from orders
+    circle = d3.select("#chart-area1").select("svg").selectAll("circle")
+        .data(orders);
+    circle.enter().append("circle")
+        .merge(circle)
+        .attr("r", function (d){
+            return d.price * 5
+        })
+        .attr("fill", function(d){
+            if (d.product == 'coffee'){
+                return "brown"
+            }
+            else{
+                return "green"
+            }
+        })
+        .attr("cx", function (d, i){
+            return 30 + i * 50
 
+        })
+        .attr("cy", 25);
+    console.log("drawn?")
+    // Step 2: Delete elements that have been removed from orders
+    circle.exit().remove();
 
     // Step 3: Update the text label
+    //textLine.data(orders);
+    textLine.enter().append("text").merge(textLine)
+        .text("Orders: " + orders.length);
+    textLine.exit().remove();
 
 }
 
