@@ -1,4 +1,5 @@
-// Part 1: 
+// Part 1:
+
 
 var svg = d3.select("#chart-area1")
     .append("svg")
@@ -62,16 +63,18 @@ function updateVisualization(orders) {
 
 loadData();
 
-d3.select("#ranking-type").on("change", updateSchoolsVisualization());
+d3.select("#ranking-type").on("change", updateSchoolsVisualization);
 
+// var _data = [];
 // Create a 'data' property under the window object
 // to store the coffee chain data
 Object.defineProperty(window, 'data', {
     // data getter
-    get: function() { return _data; },
+    get() { return this._data; },
     // data setter
-    set: function(value) {
-        _data = value;
+    set(value) {
+        //console.log(_data);
+        this._data = value;
         // update the visualization each time the data property is set by using the equal sign (e.g. data = [])
         updateSchoolsVisualization()
     }
@@ -110,15 +113,17 @@ function loadData() {
 
         // Step 3: Get the data ready: change numeric fields to being numbers!
         csv.forEach(function(d){
-
+            d.house = d.house;
             d.population = +d.population;
             d.percent_signup = +d.percent_signup;
         });
         //return(data);
 
         // Store csv data in global variable
+        console.log(csv)
         data = csv;
         console.log(data)
+        console.log(window.data)
         // updateSchoolsVisualization gets automatically called within the data = csv call;
         // basically(whenever the data is set to a value using = operator);
         // see the definition above: Object.defineProperty(window, 'data', { ...
@@ -128,28 +133,96 @@ function loadData() {
 
 // Render visualization
 function updateSchoolsVisualization() {
-
+    // console.log(data)
+    var data = window.data;
     // Step 5: Sort the Harvard houses by population,
     // and display the sorted data in the bar chart. Use the sort function
     // and provide it with an anonymous function.
+    console.log(data)
+    sortedData = data.slice().sort((a, b) => d3.descending(a.population, b.population))
+    console.log(sortedData)
 
 
 
     // Step 6: Get the currently selected option from the select box using D3
-
+    var selectedOption = d3.select('#ranking-type').property('value')
+    //var test2= test.select(this).property('value')
+    // console.log(test)
 
 
     // Step 7: Change the scales, the sorting and the dynamic
     // properties in a way that they correspond to the selected option
     // (population or signup percentage).
     // Hint: You can access JS object properties with bracket notation (product["price"])
-
+    var yExtent;
+    if (selectedOption == "population"){
+        sortedData = data.slice().sort((a, b) => d3.descending(a.population, b.population));
+        yExtent = d3.extent(sortedData, function(d) { return d.population; });
+    }
+    else if (selectedOption == "signup-percent"){
+        sortedData = data.slice().sort((a, b) => d3.descending(a.percent_signup, b.percent_signup));
+        yExtent = d3.extent(sortedData, function(d) { return d.percent_signup; });
+    }
 
 
     // Step 4: Implement the bar chart for number of population
     // -  Specify domains for the two scales
     // -  Implement the enter-update-exit sequence for rect elements
     // -  Use class attribute bar for the rects
+   // console.log("data ");
+    //console.log(window.data);
+
+//var xExtent = d3.extent(sortedData, function(d) { return d.house; }),
+//   xRange = xExtent[1] - xExtent[0],;
+
+   // var yRange = yExtent[1] - yExtent[0];
+console.log(yExtent[0]);
+console.log(yExtent[1]);
+
+
+var padding = 20;
+var height = 200;
+var width = 800;
+// houseScale
+//     .domain([xExtent[0] - (xRange * .1), xExtent[1] + (xRange * .1)])
+//     .range([padding, width-padding]);
+// yScale
+//     .domain([yExtent[0] - (yRange * .1), yExtent[1] + (yRange * .1)])
+//     .range([padding, height-padding]);
+houseScale.domain(["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"])
+    .range([padding, width-padding]);
+yScale.domain([yExtent[0], yExtent[1]]).range([height-padding, padding]);
+
+console.log(yScale(0));
+console.log(yScale(300));
+console.log(yScale(499));
+console.log(houseScale("one"));
+
+houses = d3.select("#chart-area2").select("svg").selectAll("rect")
+    .data(sortedData);
+if (selectedOption == "population"){
+    houses.enter().append("rect")
+        .merge(houses)
+        .attr("id", "bar")
+        .attr("x", function(d, i) { return i * houseScale.bandwidth(); })
+        .attr("y", function(d) { return yScale(d.population); })
+        .attr("fill", "blue")
+        .attr("width", houseScale.bandwidth())
+        .attr("height", function(d) { return height - yScale(d.population); })
+    houses.exit().remove();
+
+}
+else if (selectedOption == "signup-percent"){
+    houses.enter().append("rect")
+        .merge(houses)
+        .attr("id", "bar")
+        .attr("x", function(d, i) { return i * houseScale.bandwidth(); })
+        .attr("y", function(d) { return yScale(d.percent_signup); })
+        .attr("fill", "blue")
+        .attr("width", houseScale.bandwidth())
+        .attr("height", function(d) { return height - yScale(d.percent_signup); })
+    houses.exit().remove();
+}
 
     /* You can use this code to position the elements
 
