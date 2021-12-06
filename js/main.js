@@ -120,10 +120,10 @@ function loadData() {
         //return(data);
 
         // Store csv data in global variable
-        console.log(csv)
+        //console.log(csv)
         data = csv;
-        console.log(data)
-        console.log(window.data)
+        //console.log(data)
+        //console.log(window.data)
         // updateSchoolsVisualization gets automatically called within the data = csv call;
         // basically(whenever the data is set to a value using = operator);
         // see the definition above: Object.defineProperty(window, 'data', { ...
@@ -138,7 +138,7 @@ function updateSchoolsVisualization() {
     // Step 5: Sort the Harvard houses by population,
     // and display the sorted data in the bar chart. Use the sort function
     // and provide it with an anonymous function.
-    console.log(data)
+    //console.log(data)
     sortedData = data.slice().sort((a, b) => d3.descending(a.population, b.population))
     console.log(sortedData)
 
@@ -163,7 +163,7 @@ function updateSchoolsVisualization() {
         sortedData = data.slice().sort((a, b) => d3.descending(a.percent_signup, b.percent_signup));
         yExtent = d3.extent(sortedData, function(d) { return d.percent_signup; });
     }
-
+    console.log(sortedData)
 
     // Step 4: Implement the bar chart for number of population
     // -  Specify domains for the two scales
@@ -189,7 +189,7 @@ var width = 800;
 // yScale
 //     .domain([yExtent[0] - (yRange * .1), yExtent[1] + (yRange * .1)])
 //     .range([padding, height-padding]);
-houseScale.domain(["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"])
+houseScale.domain(["Leverett", "Adams", "Quincy", "Eliot", "Lowell", "Winthrop", "Kirkland", "Dunster", "Cabot", "Mather", "Currier", "Pfoho"])
     .range([padding, width-padding]);
 yScale.domain([yExtent[0], yExtent[1]]).range([height-padding, padding]);
 
@@ -198,17 +198,22 @@ console.log(yScale(300));
 console.log(yScale(499));
 console.log(houseScale("one"));
 
+var myColor = d3.scaleLinear().domain([0,11]).range(["red", "white"]);
+var myColor2 = d3.scaleLinear().domain([0,11]).range(["purple", "white"]);
+
 houses = d3.select("#chart-area2").select("svg").selectAll("rect")
     .data(sortedData);
 if (selectedOption == "population"){
+
     houses.enter().append("rect")
         .merge(houses)
         .attr("id", "bar")
+        .attr("width", houseScale.bandwidth())
+        .transition().duration(2000).attr("height", function(d) { return height - yScale(d.population); }).attr("fill", function(d, i){ return myColor(i)})
         .attr("x", function(d, i) { return i * houseScale.bandwidth(); })
         .attr("y", function(d) { return yScale(d.population); })
-        .attr("fill", "blue")
-        .attr("width", houseScale.bandwidth())
-        .attr("height", function(d) { return height - yScale(d.population); })
+        //.transition().duration(1000)
+
     houses.exit().remove();
 
 }
@@ -216,11 +221,12 @@ else if (selectedOption == "signup-percent"){
     houses.enter().append("rect")
         .merge(houses)
         .attr("id", "bar")
+        .attr("width", houseScale.bandwidth())
+        .transition().duration(2000).attr("height", function(d) { return height - yScale(d.percent_signup); }).attr("fill", function(d, i){ return myColor2(i)})
         .attr("x", function(d, i) { return i * houseScale.bandwidth(); })
         .attr("y", function(d) { return yScale(d.percent_signup); })
-        .attr("fill", "blue")
-        .attr("width", houseScale.bandwidth())
-        .attr("height", function(d) { return height - yScale(d.percent_signup); })
+
+
     houses.exit().remove();
 }
 
@@ -239,10 +245,53 @@ else if (selectedOption == "signup-percent"){
     // Use the following HTML class attributes:
     // x-axis and axis for the x-axis
     // y-axis and axis for the y-axis
+    if (selectedOption == "population"){
+        houseScale.domain(["Leverett", "Adams", "Quincy", "Eliot", "Lowell", "Winthrop", "Kirkland", "Dunster", "Cabot", "Mather", "Currier", "Pfoho"])
+            .range([padding, width-padding]);
+    }
+    else if (selectedOption == "signup-percent"){
+        houseScale.domain(["Adams", "Dunster", "Eliot", "Quincy", "Cabot", "Leverett", "Mather", "Winthrop", "Lowell", "Currier", "Kirkland", "Pfoho"])
+            .range([padding, width-padding]);
+    }
+    var xAxis = d3.axisBottom().scale(houseScale);
+    var yAxis = d3.axisRight().scale(yScale);
+    d3.select("#chart-area2").select("svg").selectAll("g").remove()
+    //console.log(width)
+    d3.select("#chart-area2").select("svg")
+        .append("g")
+        .attr("class", "xAxis")
+        .attr("transform", "translate(-" + (houseScale.bandwidth() / 3)+ ", 0)")
+        .transition().duration(2000).call(xAxis);
+    d3.select("#chart-area2").select("svg")
+        .append("g")
+        .attr("class", "yAxis")
+        .attr("transform", "translate("+(width-padding)+",0)")
+        //.attr("transform", "translate("+(padding)+",)")
+        .transition().duration(2000).call(yAxis);
 
+    // function updateAxes(){
+    //     var xAxis = d3.axisBottom().scale(houseScale);
+    //     var yAxis = d3.axisRight().scale(yScale);
+    //     d3.select("#chart-area2").select("svg").selectAll("g").remove()
+    //     //console.log(width)
+    //     d3.select("#chart-area2").select("svg")
+    //         .append("g")
+    //         .attr("class", "xAxis")
+    //         .attr("transform", "translate(-" + (houseScale.bandwidth() / 3)+ ", 0)")
+    //         .call(xAxis);
+    //     d3.select("#chart-area2").select("svg")
+    //         .append("g")
+    //         .attr("class", "yAxis")
+    //         .attr("transform", "translate("+(width-padding)+",0)")
+    //         //.attr("transform", "translate("+(padding)+",)")
+    //         .call(yAxis);
+    // }
 
+   // yAxe.exit().remove();
     // Step 9: Add transitions to the bars/rectangles of your chart
+    //added these earlier up under step 8
 
 
     // Step 10: Add transitions to the x and y axis
+    //added these earlier up under step 4
 }
