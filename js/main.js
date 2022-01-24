@@ -1,4 +1,6 @@
 
+curr_School = 'Harvard'
+
 
 loadData();
 
@@ -46,22 +48,26 @@ var yScale = d3.scaleLinear();
     //.domain([yExtent[0] - (yRange * .1), yExtent[1] + (yRange * .1)])
     //.range([padding, height-padding]);
 
+//console.log(`data/${curr_School}MatchData.csv`);
 
 function loadData() {
-    d3.csv("data/house-signups.csv", function(error, csv) {
+    d3.csv(`data/${curr_School}MatchData.csv`, function(error, csv) {
 
         // Step 3: Get the data ready: change numeric fields to being numbers!
         csv.forEach(function(d){
-            d.house = d.house;
-            d.population = +d.population;
-            d.percent_signup = +d.percent_signup;
+            d.Value1 = +d.Value1;
+            d.Value2 = +d.Value2;
+            d.Value3 = +d.Value3;
+            d.Value4 = +d.Value4;
+            d.Value5 = +d.Value5;
+
         });
         //return(data);
 
         // Store csv data in global variable
         //console.log(csv)
         data = csv;
-        //console.log(data)
+        console.log(data)
         //console.log(window.data)
         // updateSchoolsVisualization gets automatically called within the data = csv call;
         // basically(whenever the data is set to a value using = operator);
