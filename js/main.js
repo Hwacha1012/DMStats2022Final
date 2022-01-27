@@ -1,8 +1,10 @@
 
 curr_School = 'Harvard'
 
+var survey;
 
 loadData();
+
 
 d3.select("#ranking-type").on("change", updateVisualization);
 
@@ -20,6 +22,8 @@ Object.defineProperty(window, 'data', {
         updateVisualization()
     }
 });
+
+
 
 
 
@@ -76,16 +80,20 @@ function loadData() {
         // see the definition above: Object.defineProperty(window, 'data', { ...
 
     });
+
+
+
 }
 
 // Render visualization
 function updateVisualization() {
+   // survey = window.survey2;
+    d3.json('data/survey2021.json', function(error, json) {
+        survey = json;
+        console.log(survey)
     var data = window.data;
-
     var indexQ = 0;
-
     var test = Object.values(data[0]);
-
     var percentDiff = (Math.max.apply(Math, test))/Math.min.apply(Math, test);
     console.log(percentDiff);
 
@@ -100,6 +108,21 @@ function updateVisualization() {
             percentDiff = pDiff;
             indexQ = i;
         }
+
+    });
+
+
+
+    test = Object.values(survey);
+    console.log(test[0]);
+    var text = "Question " + (indexQ+1) + ": " + test[0][indexQ].question_text;
+    console.log(text);
+    d3.selectAll('.container').select('h2').text(text);
+
+
+
+
+
 
     });
     //console.log(percentDiff)
