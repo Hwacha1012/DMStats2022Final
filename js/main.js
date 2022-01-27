@@ -6,7 +6,7 @@ var survey;
 loadData();
 
 
-d3.select("#ranking-type").on("change", updateVisualization);
+//d3.select("#ranking-type").on("change", updateVisualization);
 
 // var _data = [];
 // Create a 'data' property under the window object
@@ -29,10 +29,14 @@ Object.defineProperty(window, 'data', {
 
 // Step 1: Define an SVG drawing area with our margin conventions. Append
 // the drawing area to the div with id chart-area2
+var padding = 20;
+var height = 200;
+var width = 1000;
+
 var margin = {top: 30, right: 30, left: 30, bottom: 50};
 svgSchools = d3.select("#chart-area2").append("svg")
-    .attr("width", 800 + margin.left + margin.right)
-    .attr("height", 200 + margin.top + margin.bottom)
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -53,6 +57,7 @@ svgSchools = d3.select("#chart-area2").append("svg")
     //.range([padding, height-padding]);
 
 var barScale = d3.scaleLinear();
+var myColor = d3.scaleLinear().domain([0,4]).range(["#D7525B", "white"]);
 
 //console.log(`data/${curr_School}MatchData.csv`);
 
@@ -98,7 +103,6 @@ function updateVisualization() {
     console.log(percentDiff);
 
 
-
     data.forEach(function(d, i){
         //console.log("here")
         values = Object.values(d);
@@ -111,7 +115,8 @@ function updateVisualization() {
 
     });
 
-
+    values3 = Object.values(data[indexQ]);
+    console.log(values3)
 
     test = Object.values(survey);
     console.log(test[0]);
@@ -119,12 +124,23 @@ function updateVisualization() {
     console.log(text);
     d3.selectAll('.container').select('h2').text(text);
 
-
+    boxes = d3.select("#chart-area2").select("svg").selectAll("rect")
+        .data(values3);
+    boxes.enter().append("rect")
+        .merge(boxes)
+        .attr("id", "bar")
+        .attr("width", 200)
+        .attr("height", 200)
+        .attr("x", function(d,i){ return i * 200})
+        .attr("y", 0)
+        .attr("fill", function(d, i){ return myColor(i)})
 
 
 
 
     });
+
+
     //console.log(percentDiff)
     //console.log(indexQ)
 

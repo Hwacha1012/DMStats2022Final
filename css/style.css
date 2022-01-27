@@ -1,20 +1,20 @@
 
 body {
     font-family: 'Lato', sans-serif;
-    background-color: #D0C6B2;
+    background-color: #F8F8F8;
 }
 
 h1 {
-    color: #865F3C;
+    color: #524F6C;
     margin-top: 40px;
     font-weight: 300;
 }
 
 h2 {
     font-weight: 100;
-    font-size: 20px;
+    font-size: 30px;
     margin-bottom: 30px;
-    color: #906666;
+    color: #524F6C;
 }
 
 /*************/
