@@ -1,0 +1,213 @@
+{
+  "Harvard": {
+    "0": {
+      "question_text": "Welcome to campus! How do you greet the first fellow '25er that you see to make that great first impression?",
+      "A": {
+        "answer_text": "Enthusiastically wave! Until you realize that they were just waving goodbye to their parents\u2026 oops",
+        "Total": 491
+      },
+      "B": {
+        "answer_text": "Reenact the mating dance of the blue-footed boobies",
+        "Total": 57
+      },
+      "C": {
+        "answer_text": "Claim to be a huge fan of The Office",
+        "Total": 81
+      },
+      "D": {
+        "answer_text": "Pitch them my startup idea: you can never start networking too early",
+        "Total": 45
+      },
+      "E": {
+        "answer_text": "I don't. I wait for them to greet me.",
+        "Total": 260
+      }
+    },
+    "1": {
+      "question_text": "So\u2026 what have you been up to this past year?",
+      "A": { "answer_text": "Making bread on Robinhood", "Total": 77 },
+      "B": { "answer_text": "Making bread my kitchen", "Total": 150 },
+      "C": {
+        "answer_text": "Slowly but surely succumbing to the TikTok algorithm",
+        "Total": 297
+      },
+      "D": {
+        "answer_text": "I uploaded a single video of my college acceptance reactions on YouTube to launch my vlogging career and then never uploaded again",
+        "Total": 27
+      },
+      "E": {
+        "answer_text": "What have I been up to this past year? What has anyone been up to this past year? What does the passage of time truly mean to anyone? Does time exist? Do I exist?",
+        "Total": 381
+      }
+    },
+    "2": {
+      "question_text": "What will you miss the most about online school?",
+      "A": {
+        "answer_text": "Waking up approximately 18 seconds before class, joining the meeting, then falling back asleep",
+        "Total": 385
+      },
+      "B": {
+        "answer_text": "Pretending like everyone is about the same height as you",
+        "Total": 58
+      },
+      "C": {
+        "answer_text": "The little adrenaline rush of pooping during class and not double checking if you're on mute",
+        "Total": 75
+      },
+      "D": {
+        "answer_text": "Sending a meme during class and watching your friend suppress a laugh",
+        "Total": 305
+      },
+      "E": {
+        "answer_text": "The ability to press Leave Meeting to escape any awkward interaction",
+        "Total": 100
+      }
+    },
+    "3": {
+      "question_text": "What were you most looking forward to in person?",
+      "A": {
+        "answer_text": "Sporting the 48 new fits I bought online over the past year",
+        "Total": 192
+      },
+      "B": { "answer_text": "Hugs \ud83e\udd70", "Total": 313 },
+      "C": {
+        "answer_text": "Charging tourists $30 for an $18 swipe into Annenberg #entrepreneurship",
+        "Total": 43
+      },
+      "D": {
+        "answer_text": "Swiping my CVS Extra Care Card like the strong, independent college student that I am",
+        "Total": 90
+      },
+      "E": {
+        "answer_text": "Making meaningful, genuine connections with people on LinkedIn I mean in real life",
+        "Total": 279
+      }
+    },
+    "4": {
+      "question_text": "What do you think of the food so far?",
+      "A": {
+        "answer_text": "Off-brand cereals surprisingly go hard",
+        "Total": 151
+      },
+      "B": {
+        "answer_text": "I have been guzzling oat milk and for some reason I cannot stop",
+        "Total": 94
+      },
+      "C": {
+        "answer_text": "Idk who Red is but this isn\u2019t giving \"best\"",
+        "Total": 108
+      },
+      "D": {
+        "answer_text": "There are about 12 variations of chicken in sauce",
+        "Total": 380
+      },
+      "E": {
+        "answer_text": "https://c.tenor.com/uxRqkT_qsOEAAAAM/ratatouille-barf.gif",
+        "Total": 185
+      }
+    },
+    "5": {
+      "question_text": "Pick a way to spend your first Harvard weekend.",
+      "A": {
+        "answer_text": "Imagining unrealistically attractive bottom halves of people\u2019s faces underneath their masks",
+        "Total": 207
+      },
+      "B": {
+        "answer_text": "Joking about pissing on the John Harvard statue but never actually doing it",
+        "Total": 183
+      },
+      "C": {
+        "answer_text": "Solidifying your course schedule for the next seven semesters",
+        "Total": 123
+      },
+      "D": {
+        "answer_text": "Passing a single raspberry White Claw around in Straus common room",
+        "Total": 206
+      },
+      "E": {
+        "answer_text": "I\u2019M STILL UNPACKING DON'T RUSH ME",
+        "Total": 192
+      }
+    },
+    "6": {
+      "question_text": "Which Harvard building do you resonate with the most?",
+      "A": {
+        "answer_text": "Lamont Library: Business on the top, party on the bottom ;)",
+        "Total": 321
+      },
+      "B": { "answer_text": "Widener: I contain multitudes.", "Total": 237 },
+      "C": { "answer_text": "Cabot Library: beep boop beep boop", "Total": 96 },
+      "D": {
+        "answer_text": "SEC: New, fresh, and emotionally distant",
+        "Total": 161
+      },
+      "E": {
+        "answer_text": "The Dudley Co-Op: I\u2019m lost, send help",
+        "Total": 94
+      }
+    },
+    "7": {
+      "question_text": "Give another definition for Primal Scream:",
+      "A": {
+        "answer_text": "Learning that a $40 billion endowment doesn\u2019t give you air conditioning",
+        "Total": 528
+      },
+      "B": {
+        "answer_text": "A beloved Harvard tradition where athletes on scooters trap Larry Bacow in a circle and scoot around him until he screams in frustration",
+        "Total": 140
+      },
+      "C": {
+        "answer_text": "Uhhh... that one painting with the long face Voldemort dude?",
+        "Total": 24
+      },
+      "D": {
+        "answer_text": "The sound of despair that first-years in Canaday make after seeing their living quarters for the first time",
+        "Total": 142
+      },
+      "E": {
+        "answer_text": "The Memorial Church bells going BRONGLONGDONGODNGLONG",
+        "Total": 72
+      }
+    },
+    "8": {
+      "question_text": "What at Harvard are you the most scared of?",
+      "A": {
+        "answer_text": "Walking into Annenberg during peak meal hours and not recognizing anyone at any of the tables",
+        "Total": 374
+      },
+      "B": { "answer_text": "Rats", "Total": 106 },
+      "C": {
+        "answer_text": "EXPOS 20: An intensive seminar that aims to improve each student\u2019s ability to discover and reason about evidence through the medium of essays.",
+        "Total": 124
+      },
+      "D": {
+        "answer_text": "Getting run over by an athlete scootering through Harvard Yard at 30mph",
+        "Total": 63
+      },
+      "E": {
+        "answer_text": "Realizing that you have run out of fun facts and may, in fact, not be that fun",
+        "Total": 240
+      }
+    },
+    "9": {
+      "question_text": "Which Harvard tradition are you the most excited for?",
+      "A": { "answer_text": "Primal Scream: The mask stays ON ", "Total": 107 },
+      "B": {
+        "answer_text": "Harvard-Yale: The only time it\u2019s acceptable to show school spirit",
+        "Total": 565
+      },
+      "C": {
+        "answer_text": "Yardfest: I wonder which C-list artist will headline this year",
+        "Total": 112
+      },
+      "D": {
+        "answer_text": "CS50: Wait\u2026 there\u2019s free brownies? \ud83d\ude03",
+        "Total": 54
+      },
+      "E": {
+        "answer_text": "River Run: She\u2019s a runner she\u2019s a track star, she gon\u2019 run away the Quad is too far",
+        "Total": 67
+      }
+    }
+  }
+}
