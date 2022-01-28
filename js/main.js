@@ -116,7 +116,7 @@ function updateVisualization() {
     });
 
     values3 = Object.values(data[indexQ]);
-    console.log(values3)
+    //console.log(values3)
 
     test = Object.values(survey);
     console.log(test[0]);
@@ -124,16 +124,123 @@ function updateVisualization() {
     console.log(text);
     d3.selectAll('.container').select('h2').text(text);
 
+
+    console.log(values3);
+    var colorIndex = [];
+
+    values4 = values3.slice().sort((a, b) => d3.ascending(a, b))
+    console.log(values4);
+    values4.forEach(function(d, i){
+        for (var x = 0; x < 5; x++){
+            if (d == values3[x]){
+                colorIndex.splice(x, 0, i);
+                console.log(i)
+                console.log(colorIndex)
+
+            }
+        }
+    });
+    console.log(colorIndex);
+
+    var highIndex = colorIndex.indexOf(0);
+    var lowIndex = colorIndex.indexOf(4);
+    colorIndex[highIndex] = 4;
+    colorIndex[lowIndex] = 0;
+
+    highIndex = colorIndex.indexOf(1);
+    lowIndex = colorIndex.indexOf(3);
+    colorIndex[highIndex] = 3;
+    colorIndex[lowIndex] = 1;
+    console.log(colorIndex);
+    //colorIndex = colorIndex.reverse();
+    /*
+    var len = colorIndex.length;
+        for (var i = len-1; i>=0; i--){
+            for(var j = 1; j<=i; j++){
+                if(values3[j-1]>values3[j]){
+                    var temp = colorIndex[j-1];
+                    colorIndex[j-1] = colorIndex[j];
+                    colorIndex[j] = temp;
+                }
+            }
+        }
+        //return arr;
+        console.log(colorIndex);
+
+     */
+        /*
+
+    values3.forEach(function(d, i){
+
+
+        if (i > 1){
+            if (d > values3[colorIndex.length - 1]){
+                colorIndex.push(i);
+            }
+            else{
+                colorIndex.unshift(i);
+            }
+        }
+        if (i > 2){
+            if (d > values3[colorIndex.length - 1]){
+                colorIndex.push(i);
+            }
+            else if (d > values3[colorIndex.length - 2]){
+                colorIndex.splice(colorIndex.length-2, 0, i);
+            }
+            else{
+                colorIndex.unshift(i);
+            }
+        }
+        if (i > 3){
+            if (d > values3[colorIndex.length - 1]){
+                colorIndex.push(i);
+            }
+            else if (d > values3[colorIndex.length - 2]){
+                colorIndex.splice(colorIndex.length-2, 0, i);
+            }
+            else if (d > values3[colorIndex.length - 3]){
+                colorIndex.splice(colorIndex.length-3, 0, i);
+
+            }
+            else{
+                colorIndex.unshift(i);
+            }
+        }
+        else{
+            colorIndex.push(i);
+        }
+
+    });
+    */
+
+    console.log(colorIndex)
+
     boxes = d3.select("#chart-area2").select("svg").selectAll("rect")
         .data(values3);
+    /*
+    boxes.enter().append("g")
+        .merge(boxes)
+        .attr("id", "gBox")
+        //.attr("x", function(d, i){ return i * 200})
+        //.attr("y", 0)
+        .attr("transform", function(d, i) { return "translate(" + i * 200 +", 0" + ")"; });
+
+     */
     boxes.enter().append("rect")
         .merge(boxes)
         .attr("id", "bar")
         .attr("width", 200)
         .attr("height", 200)
-        .attr("x", function(d,i){ return i * 200})
+        .attr("x", function(d,i){ return (i) * 200})
         .attr("y", 0)
-        .attr("fill", function(d, i){ return myColor(i)})
+        .attr("fill", function(d, i){ return myColor(colorIndex[i])});
+    boxes.enter().append("text")
+        .merge(boxes)
+        .attr("x", function(d,i){ return (i) * 200})
+        .attr("y", 100)
+        .text(function(d) { return d; });
+
 
 
 
