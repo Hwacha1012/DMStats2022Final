@@ -30,7 +30,7 @@ Object.defineProperty(window, 'data', {
 // Step 1: Define an SVG drawing area with our margin conventions. Append
 // the drawing area to the div with id chart-area2
 var padding = 20;
-var height = 200;
+var height = 240;
 var width = 1000;
 
 var margin = {top: 30, right: 30, left: 30, bottom: 50};
@@ -118,9 +118,9 @@ function updateVisualization() {
     values3 = Object.values(data[indexQ]);
     //console.log(values3)
 
-    test = Object.values(survey);
+    surveyV = Object.values(survey);
     console.log(test[0]);
-    var text = "Question " + (indexQ+1) + ": " + test[0][indexQ].question_text;
+    var text = "Question " + (indexQ+1) + ": " + surveyV[0][indexQ].question_text;
     console.log(text);
     d3.selectAll('.container').select('h2').text(text);
 
@@ -232,18 +232,66 @@ function updateVisualization() {
         .attr("id", "bar")
         .attr("width", 200)
         .attr("height", 200)
-        .attr("x", function(d,i){ return (i) * 200})
-        .attr("y", 0)
-        .attr("fill", function(d, i){ return myColor(colorIndex[i])});
+        .attr("x", function(d,i){ return ((i) * 200) + 3})
+        .attr("y", 3)
+        .attr("fill", function(d, i){ return myColor(colorIndex[i])})
+        .attr("stroke", "black")
+        .attr("stroke-width", 3);
+
+
+    boxes.enter().append("foreignObject")
+        .merge(boxes)
+        .attr("width", 200-2*padding)
+        .attr("height", 200-2*padding)
+        .attr("x", function(d,i){ return (i) * 200 + padding})
+        .attr("y", padding)
+        .append("xhtml:body")
+        .style("font", "18px 'Helvetica Neue'")
+        .style("color", "black")
+        .style("background-color", function(d, i){ return myColor(colorIndex[i])})
+        .html(function(d, i) {
+            if (i == 0){
+                return "A: " + surveyV[0][indexQ].A.answer_text;
+            }
+            else if (i == 1){
+                return "B: " +surveyV[0][indexQ].B.answer_text;
+            }
+            else if (i == 2){
+                return "C: " +surveyV[0][indexQ].C.answer_text;
+            }
+            else if (i == 3){
+                return "D: " +surveyV[0][indexQ].D.answer_text;
+            }
+            else if (i == 4){
+                return "E: " +surveyV[0][indexQ].E.answer_text;
+            }
+        });
+
+    /*
     boxes.enter().append("text")
         .merge(boxes)
         .attr("x", function(d,i){ return (i) * 200})
         .attr("y", 100)
-        .text(function(d) { return d; });
+        .text(function(d, i) {
+            if (i == 0){
+                return surveyV[0][indexQ].A.answer_text;
+            }
+            else if (i == 1){
+                return surveyV[0][indexQ].B.answer_text;
+            }
+            else if (i == 2){
+                return surveyV[0][indexQ].C.answer_text;
+            }
+            else if (i == 3){
+                return surveyV[0][indexQ].D.answer_text;
+            }
+            else if (i == 4){
+                return surveyV[0][indexQ].E.answer_text;
+            }
 
+        });
 
-
-
+    */
 
     });
 
