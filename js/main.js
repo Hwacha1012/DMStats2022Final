@@ -235,8 +235,13 @@ function updateVisualization() {
         function draw2(){
             boxes.enter().append("foreignObject")
                 .merge(boxes)
+                .attr("height", function(d,i){
+                    if (i+1 == selectedBox){
+                        return 300-2*padding;
+                    }
+                    return 200-2*padding;
+                })
                 .attr("width", 200-2*padding)
-                .attr("height", 200-2*padding)
                 .attr("x", function(d,i){ return (i) * 200 + padding})
                 .attr("y", padding)
                 .attr("fill", "none")
@@ -253,7 +258,7 @@ function updateVisualization() {
                         //console.log("i is 0?")
                         if (selectedBox == 1){
                             //console.log("hi")
-                            return "A: " + surveyV[0][indexQ].A.answer_text + "<br>" + "hi1";
+                            return "A: " + surveyV[0][indexQ].A.answer_text + "<br> <br></br>" + "hi1";
                         }
                         else{
                             //console.log("hey")
@@ -264,7 +269,7 @@ function updateVisualization() {
                     else if (i == 1){
                         if (selectedBox == 2){
                             //console.log("hi")
-                            return "B: " + surveyV[0][indexQ].B.answer_text + "<br> " + "hi2";
+                            return "B: " + surveyV[0][indexQ].B.answer_text + "<br> <br></br>" + "hi2";
                         }
                         else{
                             //console.log("hey")
@@ -275,7 +280,7 @@ function updateVisualization() {
                     else if (i == 2){
                         if (selectedBox == 3){
                             //console.log("hi")
-                            return "C: " + surveyV[0][indexQ].C.answer_text + "<br>" + "hi3";
+                            return "C: " + surveyV[0][indexQ].C.answer_text + "<br> <br></br>" + "hi3";
                         }
                         else{
                             //console.log("hey")
