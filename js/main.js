@@ -51,11 +51,11 @@ svgSchools = d3.select("#chart-area2").append("svg")
 
 //var padding = 20;
 //var houseScale = d3.scaleBand();
-    //.domain([xExtent[0] - (xRange * .1), xExtent[1] + (xRange * .1)])
-    //.range([padding, width-padding]);
+//.domain([xExtent[0] - (xRange * .1), xExtent[1] + (xRange * .1)])
+//.range([padding, width-padding]);
 //var yScale = d3.scaleLinear();
-    //.domain([yExtent[0] - (yRange * .1), yExtent[1] + (yRange * .1)])
-    //.range([padding, height-padding]);
+//.domain([yExtent[0] - (yRange * .1), yExtent[1] + (yRange * .1)])
+//.range([padding, height-padding]);
 
 var barScale = d3.scaleLinear();
 var myColor = d3.scaleLinear().domain([0,4]).range(["#D7525B", "white"]);
@@ -95,129 +95,129 @@ var selectedBox = 0;
 var reDraw = false;
 // Render visualization
 function updateVisualization() {
-   // survey = window.survey2;
+    // survey = window.survey2;
     d3.json('data/survey2021.json', function(error, json) {
         survey = json;
         console.log(survey)
-    var data = window.data;
-    var indexQ = 0;
-    var test = Object.values(data[0]);
-    var percentDiff = (Math.max.apply(Math, test))/Math.min.apply(Math, test);
-    console.log(percentDiff);
+        var data = window.data;
+        var indexQ = 0;
+        var test = Object.values(data[0]);
+        var percentDiff = (Math.max.apply(Math, test))/Math.min.apply(Math, test);
+        console.log(percentDiff);
 
 
-    data.forEach(function(d, i){
-        //console.log("here")
-        values = Object.values(d);
-        pDiff = Math.max.apply(Math, values)/Math.min.apply(Math, values);
-        console.log(pDiff)
-        if (pDiff > percentDiff ){
-            percentDiff = pDiff;
-            indexQ = i;
-        }
-
-    });
-
-    values3 = Object.values(data[indexQ]);
-    //console.log(values3)
-
-    surveyV = Object.values(survey);
-    console.log(test[0]);
-    var text = "Question " + (indexQ+1) + ": " + surveyV[0][indexQ].question_text;
-    console.log(text);
-    d3.selectAll('.container').select('h2').text(text);
-
-
-    console.log(values3);
-    var colorIndex = [];
-
-    values4 = values3.slice().sort((a, b) => d3.ascending(a, b))
-    console.log(values4);
-    values4.forEach(function(d, i){
-        for (var x = 0; x < 5; x++){
-            if (d == values3[x]){
-                colorIndex.splice(x, 0, i);
-                console.log(i)
-                console.log(colorIndex)
-
+        data.forEach(function(d, i){
+            //console.log("here")
+            values = Object.values(d);
+            pDiff = Math.max.apply(Math, values)/Math.min.apply(Math, values);
+            console.log(pDiff)
+            if (pDiff > percentDiff ){
+                percentDiff = pDiff;
+                indexQ = i;
             }
+
+        });
+
+        values3 = Object.values(data[indexQ]);
+        //console.log(values3)
+
+        surveyV = Object.values(survey);
+        console.log(test[0]);
+        var text = "Question " + (indexQ+1) + ": " + surveyV[0][indexQ].question_text;
+        console.log(text);
+        d3.selectAll('.container').select('h2').text(text);
+
+
+        console.log(values3);
+        var colorIndex = [];
+
+        values4 = values3.slice().sort((a, b) => d3.ascending(a, b))
+        console.log(values4);
+        values4.forEach(function(d, i){
+            for (var x = 0; x < 5; x++){
+                if (d == values3[x]){
+                    colorIndex.splice(x, 0, i);
+                    console.log(i)
+                    console.log(colorIndex)
+
+                }
+            }
+        });
+        console.log(colorIndex);
+
+        var highIndex = colorIndex.indexOf(0);
+        var lowIndex = colorIndex.indexOf(4);
+        colorIndex[highIndex] = 4;
+        colorIndex[lowIndex] = 0;
+
+        highIndex = colorIndex.indexOf(1);
+        lowIndex = colorIndex.indexOf(3);
+        colorIndex[highIndex] = 3;
+        colorIndex[lowIndex] = 1;
+
+
+        console.log(colorIndex);
+        //var inForeign = false;
+
+        console.log(values4);
+
+        /*
+        while (reDraw){
+            console.log("redraw");
+            updateVisualization();
+
+            reDraw = false;
         }
-    });
-    console.log(colorIndex);
 
-    var highIndex = colorIndex.indexOf(0);
-    var lowIndex = colorIndex.indexOf(4);
-    colorIndex[highIndex] = 4;
-    colorIndex[lowIndex] = 0;
+         */
+        boxes = d3.select("#chart-area2").select("svg").selectAll("rect")
+            .data(values3);
+        /*
+        boxes.enter().append("g")
+            .merge(boxes)
+            .attr("id", "gBox")
+            //.attr("x", function(d, i){ return i * 200})
+            //.attr("y", 0)
+            .attr("transform", function(d, i) { return "translate(" + i * 200 +", 0" + ")"; });
 
-    highIndex = colorIndex.indexOf(1);
-    lowIndex = colorIndex.indexOf(3);
-    colorIndex[highIndex] = 3;
-    colorIndex[lowIndex] = 1;
+         */
 
+        boxes.enter().append("rect")
+            .merge(boxes)
+            .attr("id", "bar")
+            .attr("width", 200)
+            .attr("height", 200)
+            .attr("x", function(d,i){ return ((i) * 200) + 3})
+            .attr("y", 3)
+            .attr("fill", function(d, i){ return myColor(colorIndex[i])})
+            .attr("stroke", "black")
+            .attr("stroke-width", 3)
+            .on('mouseover', function(d, i) {
+                //console.log("in")
+                selectedBox = i+1;
+                //reDraw = true;
+                //updateVisualization();
 
-    console.log(colorIndex);
-    //var inForeign = false;
+                d3.select(this)
+                    .transition()
+                    .attr("width", 200)
+                    .attr("height", 300);
+                draw2();
+                //updateVisualization2();
 
-    console.log(values4);
-
-    /*
-    while (reDraw){
-        console.log("redraw");
-        updateVisualization();
-
-        reDraw = false;
-    }
-
-     */
-    boxes = d3.select("#chart-area2").select("svg").selectAll("rect")
-        .data(values3);
-    /*
-    boxes.enter().append("g")
-        .merge(boxes)
-        .attr("id", "gBox")
-        //.attr("x", function(d, i){ return i * 200})
-        //.attr("y", 0)
-        .attr("transform", function(d, i) { return "translate(" + i * 200 +", 0" + ")"; });
-
-     */
-
-    boxes.enter().append("rect")
-        .merge(boxes)
-        .attr("id", "bar")
-        .attr("width", 200)
-        .attr("height", 200)
-        .attr("x", function(d,i){ return ((i) * 200) + 3})
-        .attr("y", 3)
-        .attr("fill", function(d, i){ return myColor(colorIndex[i])})
-        .attr("stroke", "black")
-        .attr("stroke-width", 3)
-        .on('mouseover', function(d, i) {
-            //console.log("in")
-            selectedBox = i+1;
-            //reDraw = true;
-            //updateVisualization();
-
-            d3.select(this)
-                .transition()
-                .attr("width", 200)
-                .attr("height", 300);
-            draw2();
-            //updateVisualization2();
-
-            //d3.selectAll(".textBox").remove()
-            //d3.selectAll(".textBox").update
+                //d3.selectAll(".textBox").remove()
+                //d3.selectAll(".textBox").update
 
 
 
                 //.attr("x", function(d,i){ return ((i) * 250) + 3});
-            //reD();
-           // setTimeout(100);
-           // reD();
-        })
-        .on('mouseout', function(d, i) {
-            //console.log("out")
-            //setTimeout(10000);
+                //reD();
+                // setTimeout(100);
+                // reD();
+            })
+            .on('mouseout', function(d, i) {
+                //console.log("out")
+                //setTimeout(10000);
                 selectedBox = 0;
                 d3.select(this)
                     .transition()
@@ -227,85 +227,88 @@ function updateVisualization() {
                 draw2();
 
 
-            //.attr("x", function(d,i){ return ((i) * 250) + 3});
-        });
-        boxes.exit().remove();
-    draw2();
-
-    function draw2(){
-        boxes.enter().append("foreignObject")
-            .merge(boxes)
-            .attr("width", 200-2*padding)
-            .attr("height", 200-2*padding)
-            .attr("x", function(d,i){ return (i) * 200 + padding})
-            .attr("y", padding)
-            .attr("fill", "none")
-            .style("pointer-events", "none")
-            .append("xhtml:body")
-            .attr("class", "textBox")
-            .style("font", "18px 'Helvetica Neue'")
-            .style("color", "black")
-            .style("background-color", function(d, i){ return myColor(colorIndex[i])})
-            //.style("pointer-events", "none")
-            .html(function(d, i) {
-                if (i == 0){
-                    //console.log("i is 0?")
-                    if (selectedBox == 1){
-                        //console.log("hi")
-                        return "A: " + surveyV[0][indexQ].A.answer_text + "\n " + "hi";
-                    }
-                    else{
-                        //console.log("hey")
-                        return "A: " + surveyV[0][indexQ].A.answer_text;
-                    }
-
-                }
-                else if (i == 1){
-                    if (selectedBox == 2){
-                        //console.log("hi")
-                        return "B: " + surveyV[0][indexQ].B.answer_text + "\n " + "hi";
-                    }
-                    else{
-                        //console.log("hey")
-                        return "B: " + surveyV[0][indexQ].B.answer_text;
-                    }
-
-                }
-                else if (i == 2){
-                    if (selectedBox == 3){
-                        //console.log("hi")
-                        return "C: " + surveyV[0][indexQ].C.answer_text + "\n" + "hi";
-                    }
-                    else{
-                        //console.log("hey")
-                        return "C: " + surveyV[0][indexQ].C.answer_text;
-                    }
-                }
-                else if (i == 3){
-                    if (selectedBox == 4){
-                        //console.log("hi")
-                        return "D: " + surveyV[0][indexQ].D.answer_text + "\n" + "hi";
-                    }
-                    else{
-                        //console.log("hey")
-                        return "D: " + surveyV[0][indexQ].D.answer_text;
-                    }
-                }
-                else if (i == 4){
-                    if (selectedBox == 5){
-                        //console.log("hi")
-                        return "E: " + surveyV[0][indexQ].E.answer_text + "\n" + "hi";
-                    }
-                    else{
-                        //console.log("hey")
-                        return "E: " + surveyV[0][indexQ].E.answer_text;
-                    }
-                }
+                //.attr("x", function(d,i){ return ((i) * 250) + 3});
             });
         boxes.exit().remove();
+        draw2();
+
+        function draw2(){
+            boxes.enter().append("foreignObject")
+                .merge(boxes)
+                .attr("width", 200-2*padding)
+                .attr("height", 200-2*padding)
+                .attr("x", function(d,i){ return (i) * 200 + padding})
+                .attr("y", padding)
+                .attr("fill", "none")
+                .style("pointer-events", "none")
+                .append("xhtml:body")
+                .attr("class", "textBox")
+                .style("font", "18px 'Helvetica Neue'")
+                .style("color", "black")
+                .style("background-color", function(d, i){ return myColor(colorIndex[i])})
+
+                //.style("pointer-events", "none")
+                .html(function(d, i) {
+                    if (i == 0){
+                        //console.log("i is 0?")
+                        if (selectedBox == 1){
+                            //console.log("hi")
+                            return "A: " + surveyV[0][indexQ].A.answer_text + "<br>" + "hi1";
+                        }
+                        else{
+                            //console.log("hey")
+                            return "A: " + surveyV[0][indexQ].A.answer_text;
+                        }
+
+                    }
+                    else if (i == 1){
+                        if (selectedBox == 2){
+                            //console.log("hi")
+                            return "B: " + surveyV[0][indexQ].B.answer_text + "<br> " + "hi2";
+                        }
+                        else{
+                            //console.log("hey")
+                            return "B: " + surveyV[0][indexQ].B.answer_text;
+                        }
+
+                    }
+                    else if (i == 2){
+                        if (selectedBox == 3){
+                            //console.log("hi")
+                            return "C: " + surveyV[0][indexQ].C.answer_text + "<br>" + "hi3";
+                        }
+                        else{
+                            //console.log("hey")
+                            return "C: " + surveyV[0][indexQ].C.answer_text;
+                        }
+                    }
+                    else if (i == 3){
+                        if (selectedBox == 4){
+                            //console.log("hi")
+                            return "D: " + surveyV[0][indexQ].D.answer_text + "\n" + "hi4";
+                        }
+                        else{
+                            //console.log("hey")
+                            return "D: " + surveyV[0][indexQ].D.answer_text;
+                        }
+                    }
+                    else if (i == 4){
+                        if (selectedBox == 5){
+                            //console.log("hi")
+                            return "E: " + surveyV[0][indexQ].E.answer_text + "\n" + "hi5";
+                        }
+                        else{
+                            //console.log("hey")
+                            return "E: " + surveyV[0][indexQ].E.answer_text;
+                        }
+                    }
+                });
+            boxes.exit().remove();
+
         }
 
         boxes.exit().remove();
+        //draw2();
 
     });
 
@@ -324,4 +327,3 @@ function reD(){
 
     reDraw = false;
 }
-
