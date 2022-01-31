@@ -20,6 +20,7 @@ Object.defineProperty(window, 'data', {
         this._data = value;
         // update the visualization each time the data property is set by using the equal sign (e.g. data = [])
         updateVisualization()
+        //updateVisualization2()
     }
 });
 
@@ -90,6 +91,8 @@ function loadData() {
 
 }
 
+var selectedBox = 0;
+var reDraw = false;
 // Render visualization
 function updateVisualization() {
    // survey = window.survey2;
@@ -151,73 +154,22 @@ function updateVisualization() {
     lowIndex = colorIndex.indexOf(3);
     colorIndex[highIndex] = 3;
     colorIndex[lowIndex] = 1;
-    console.log(colorIndex);
-    //colorIndex = colorIndex.reverse();
-    /*
-    var len = colorIndex.length;
-        for (var i = len-1; i>=0; i--){
-            for(var j = 1; j<=i; j++){
-                if(values3[j-1]>values3[j]){
-                    var temp = colorIndex[j-1];
-                    colorIndex[j-1] = colorIndex[j];
-                    colorIndex[j] = temp;
-                }
-            }
-        }
-        //return arr;
-        console.log(colorIndex);
 
-     */
-        /*
-
-    values3.forEach(function(d, i){
-
-
-        if (i > 1){
-            if (d > values3[colorIndex.length - 1]){
-                colorIndex.push(i);
-            }
-            else{
-                colorIndex.unshift(i);
-            }
-        }
-        if (i > 2){
-            if (d > values3[colorIndex.length - 1]){
-                colorIndex.push(i);
-            }
-            else if (d > values3[colorIndex.length - 2]){
-                colorIndex.splice(colorIndex.length-2, 0, i);
-            }
-            else{
-                colorIndex.unshift(i);
-            }
-        }
-        if (i > 3){
-            if (d > values3[colorIndex.length - 1]){
-                colorIndex.push(i);
-            }
-            else if (d > values3[colorIndex.length - 2]){
-                colorIndex.splice(colorIndex.length-2, 0, i);
-            }
-            else if (d > values3[colorIndex.length - 3]){
-                colorIndex.splice(colorIndex.length-3, 0, i);
-
-            }
-            else{
-                colorIndex.unshift(i);
-            }
-        }
-        else{
-            colorIndex.push(i);
-        }
-
-    });
-    */
 
     console.log(colorIndex);
     //var inForeign = false;
 
     console.log(values4);
+
+    /*
+    while (reDraw){
+        console.log("redraw");
+        updateVisualization();
+
+        reDraw = false;
+    }
+
+     */
     boxes = d3.select("#chart-area2").select("svg").selectAll("rect")
         .data(values3);
     /*
@@ -242,82 +194,118 @@ function updateVisualization() {
         .attr("stroke-width", 3)
         .on('mouseover', function(d, i) {
             //console.log("in")
+            selectedBox = i+1;
+            //reDraw = true;
+            //updateVisualization();
+
             d3.select(this)
                 .transition()
                 .attr("width", 200)
                 .attr("height", 300);
+            draw2();
+            //updateVisualization2();
+
+            //d3.selectAll(".textBox").remove()
+            //d3.selectAll(".textBox").update
+
+
+
                 //.attr("x", function(d,i){ return ((i) * 250) + 3});
+            //reD();
+           // setTimeout(100);
+           // reD();
         })
         .on('mouseout', function(d, i) {
             //console.log("out")
             //setTimeout(10000);
+                selectedBox = 0;
                 d3.select(this)
                     .transition()
                     .attr("width", 200)
                     .attr("height", 200);
 
+                draw2();
+
 
             //.attr("x", function(d,i){ return ((i) * 250) + 3});
         });
+        boxes.exit().remove();
+    draw2();
 
+    function draw2(){
+        boxes.enter().append("foreignObject")
+            .merge(boxes)
+            .attr("width", 200-2*padding)
+            .attr("height", 200-2*padding)
+            .attr("x", function(d,i){ return (i) * 200 + padding})
+            .attr("y", padding)
+            .attr("fill", "none")
+            .style("pointer-events", "none")
+            .append("xhtml:body")
+            .attr("class", "textBox")
+            .style("font", "18px 'Helvetica Neue'")
+            .style("color", "black")
+            .style("background-color", function(d, i){ return myColor(colorIndex[i])})
+            //.style("pointer-events", "none")
+            .html(function(d, i) {
+                if (i == 0){
+                    //console.log("i is 0?")
+                    if (selectedBox == 1){
+                        //console.log("hi")
+                        return "A: " + surveyV[0][indexQ].A.answer_text + "\n " + "hi";
+                    }
+                    else{
+                        //console.log("hey")
+                        return "A: " + surveyV[0][indexQ].A.answer_text;
+                    }
 
-    boxes.enter().append("foreignObject")
-        .merge(boxes)
-        .attr("width", 200-2*padding)
-        .attr("height", 200-2*padding)
-        .attr("x", function(d,i){ return (i) * 200 + padding})
-        .attr("y", padding)
-        .attr("fill", "none")
-        .style("pointer-events", "none")
-        .append("xhtml:body")
-        .style("font", "18px 'Helvetica Neue'")
-        .style("color", "black")
-        .style("background-color", function(d, i){ return myColor(colorIndex[i])})
-        //.style("pointer-events", "none")
-        .html(function(d, i) {
-            if (i == 0){
-                return "A: " + surveyV[0][indexQ].A.answer_text;
-            }
-            else if (i == 1){
-                return "B: " + surveyV[0][indexQ].B.answer_text;
-            }
-            else if (i == 2){
-                return "C: " + surveyV[0][indexQ].C.answer_text;
-            }
-            else if (i == 3){
-                return "D: " + surveyV[0][indexQ].D.answer_text;
-            }
-            else if (i == 4){
-                return "E: " + surveyV[0][indexQ].E.answer_text;
-            }
-        });
-        //.style("pointer-events", "none");
+                }
+                else if (i == 1){
+                    if (selectedBox == 2){
+                        //console.log("hi")
+                        return "B: " + surveyV[0][indexQ].B.answer_text + "\n " + "hi";
+                    }
+                    else{
+                        //console.log("hey")
+                        return "B: " + surveyV[0][indexQ].B.answer_text;
+                    }
 
-    /*
-    boxes.enter().append("text")
-        .merge(boxes)
-        .attr("x", function(d,i){ return (i) * 200})
-        .attr("y", 100)
-        .text(function(d, i) {
-            if (i == 0){
-                return surveyV[0][indexQ].A.answer_text;
-            }
-            else if (i == 1){
-                return surveyV[0][indexQ].B.answer_text;
-            }
-            else if (i == 2){
-                return surveyV[0][indexQ].C.answer_text;
-            }
-            else if (i == 3){
-                return surveyV[0][indexQ].D.answer_text;
-            }
-            else if (i == 4){
-                return surveyV[0][indexQ].E.answer_text;
-            }
+                }
+                else if (i == 2){
+                    if (selectedBox == 3){
+                        //console.log("hi")
+                        return "C: " + surveyV[0][indexQ].C.answer_text + "\n" + "hi";
+                    }
+                    else{
+                        //console.log("hey")
+                        return "C: " + surveyV[0][indexQ].C.answer_text;
+                    }
+                }
+                else if (i == 3){
+                    if (selectedBox == 4){
+                        //console.log("hi")
+                        return "D: " + surveyV[0][indexQ].D.answer_text + "\n" + "hi";
+                    }
+                    else{
+                        //console.log("hey")
+                        return "D: " + surveyV[0][indexQ].D.answer_text;
+                    }
+                }
+                else if (i == 4){
+                    if (selectedBox == 5){
+                        //console.log("hi")
+                        return "E: " + surveyV[0][indexQ].E.answer_text + "\n" + "hi";
+                    }
+                    else{
+                        //console.log("hey")
+                        return "E: " + surveyV[0][indexQ].E.answer_text;
+                    }
+                }
+            });
+        boxes.exit().remove();
+        }
 
-        });
-
-    */
+        boxes.exit().remove();
 
     });
 
@@ -326,5 +314,14 @@ function updateVisualization() {
     //console.log(indexQ)
 
 
+
+}
+
+console.log("here?")
+function reD(){
+    console.log("redraw2");
+    updateVisualization();
+
+    reDraw = false;
 }
 
