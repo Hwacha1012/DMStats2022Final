@@ -214,8 +214,10 @@ function updateVisualization() {
     });
     */
 
-    console.log(colorIndex)
+    console.log(colorIndex);
+    //var inForeign = false;
 
+    console.log(values4);
     boxes = d3.select("#chart-area2").select("svg").selectAll("rect")
         .data(values3);
     /*
@@ -227,6 +229,7 @@ function updateVisualization() {
         .attr("transform", function(d, i) { return "translate(" + i * 200 +", 0" + ")"; });
 
      */
+
     boxes.enter().append("rect")
         .merge(boxes)
         .attr("id", "bar")
@@ -236,7 +239,26 @@ function updateVisualization() {
         .attr("y", 3)
         .attr("fill", function(d, i){ return myColor(colorIndex[i])})
         .attr("stroke", "black")
-        .attr("stroke-width", 3);
+        .attr("stroke-width", 3)
+        .on('mouseover', function(d, i) {
+            //console.log("in")
+            d3.select(this)
+                .transition()
+                .attr("width", 200)
+                .attr("height", 300);
+                //.attr("x", function(d,i){ return ((i) * 250) + 3});
+        })
+        .on('mouseout', function(d, i) {
+            //console.log("out")
+            //setTimeout(10000);
+                d3.select(this)
+                    .transition()
+                    .attr("width", 200)
+                    .attr("height", 200);
+
+
+            //.attr("x", function(d,i){ return ((i) * 250) + 3});
+        });
 
 
     boxes.enter().append("foreignObject")
@@ -245,27 +267,31 @@ function updateVisualization() {
         .attr("height", 200-2*padding)
         .attr("x", function(d,i){ return (i) * 200 + padding})
         .attr("y", padding)
+        .attr("fill", "none")
+        .style("pointer-events", "none")
         .append("xhtml:body")
         .style("font", "18px 'Helvetica Neue'")
         .style("color", "black")
         .style("background-color", function(d, i){ return myColor(colorIndex[i])})
+        //.style("pointer-events", "none")
         .html(function(d, i) {
             if (i == 0){
                 return "A: " + surveyV[0][indexQ].A.answer_text;
             }
             else if (i == 1){
-                return "B: " +surveyV[0][indexQ].B.answer_text;
+                return "B: " + surveyV[0][indexQ].B.answer_text;
             }
             else if (i == 2){
-                return "C: " +surveyV[0][indexQ].C.answer_text;
+                return "C: " + surveyV[0][indexQ].C.answer_text;
             }
             else if (i == 3){
-                return "D: " +surveyV[0][indexQ].D.answer_text;
+                return "D: " + surveyV[0][indexQ].D.answer_text;
             }
             else if (i == 4){
-                return "E: " +surveyV[0][indexQ].E.answer_text;
+                return "E: " + surveyV[0][indexQ].E.answer_text;
             }
         });
+        //.style("pointer-events", "none");
 
     /*
     boxes.enter().append("text")
