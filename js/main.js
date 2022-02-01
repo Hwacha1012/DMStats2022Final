@@ -266,9 +266,10 @@ function updateVisualization() {
                 selectedBox = i+1;
                 d3.select(this)
                     .transition().duration(50)
+                    //.transition()
                     .attr("width", 200)
                     .attr("height", 350);
-                //setTimeout(1000);
+                //setTimeout(10000);
                 draw2();
 
 
@@ -281,6 +282,7 @@ function updateVisualization() {
                     .transition()
                     .attr("width", 200)
                     .attr("height", 200);
+                //setTimeout(10000);
                 draw3();
 
 
@@ -295,6 +297,7 @@ function updateVisualization() {
             //boxes2 = d3.select("#chart-area2").select("svg").selectAll("rect")
                // .data(values3);
             //
+            //setTimeout(1000);
             boxes.enter().append("foreignObject")
                 .merge(boxes)
                 .attr("height", function(d,i){
@@ -316,6 +319,7 @@ function updateVisualization() {
                 .html(function(d, i) {
                     if (i == 0){
                         //console.log("i is 0?")
+                        //setTimeout(10000);
                         if (selectedBox == 1){
                             //console.log("hi")
                             if (colorIndex[i] == 4){
@@ -404,6 +408,7 @@ function updateVisualization() {
             // .data(values3);
             console.log("draw3");
             d3.selectAll(".textBox").remove();
+            //setTimeout(1000);
             boxes.enter().append("foreignObject")
                 .merge(boxes)
                 .attr("height", function(d,i){
