@@ -57,10 +57,10 @@ svgSchools = d3.select("#chart-area2").append("svg")
 //.domain([yExtent[0] - (yRange * .1), yExtent[1] + (yRange * .1)])
 //.range([padding, height-padding]);
 
-var barScale = d3.scaleLinear();
+//var barScale = d3.scaleLinear();
 var myColor = d3.scaleLinear().domain([0,4]).range(["#D7525B", "white"]);
 
-var myColor2 = d3.scaleLinear().domain([0,100]).range(["#D7525B", "white"]);
+//var myColor2 = d3.scaleLinear().domain([0,100]).range(["#D7525B", "white"]);
 //console.log(`data/${curr_School}MatchData.csv`);
 
 function loadData() {
@@ -80,7 +80,7 @@ function loadData() {
         // Store csv data in global variable
         //console.log(csv)
         data = csv;
-        console.log(data);
+        //console.log(data);
         //console.log(window.data)
         // updateSchoolsVisualization gets automatically called within the data = csv call;
         // basically(whenever the data is set to a value using = operator);
@@ -96,7 +96,7 @@ var selectedBox = 0;
 var reDraw = false;
 
 
-//for drawing scaale
+//for drawing scale
 scale = d3.scaleBand();
 scale.domain(["More Matches", "Fewer Matches"])
     .range([0, 230]);
@@ -150,19 +150,19 @@ function updateVisualization() {
     // survey = window.survey2;
     d3.json('data/survey2021.json', function(error, json) {
         survey = json;
-        console.log(survey)
+        //console.log(survey)
         var data = window.data;
         var indexQ = 0;
         var test = Object.values(data[0]);
         var percentDiff = (Math.max.apply(Math, test))/Math.min.apply(Math, test);
-        console.log(percentDiff);
+        //console.log(percentDiff);
 
 
         data.forEach(function(d, i){
             //console.log("here")
             values = Object.values(d);
             pDiff = Math.max.apply(Math, values)/Math.min.apply(Math, values);
-            console.log(pDiff)
+            //console.log(pDiff)
             if (pDiff > percentDiff ){
                 percentDiff = pDiff;
                 indexQ = i;
@@ -174,28 +174,28 @@ function updateVisualization() {
         //console.log(values3)
 
         surveyV = Object.values(survey);
-        console.log(test[0]);
+        //console.log(test[0]);
         var text = "Question " + (indexQ+1) + ": " + surveyV[0][indexQ].question_text;
-        console.log(text);
+        //console.log(text);
         d3.selectAll('.container').select('h2').text(text);
 
 
-        console.log(values3);
+        //console.log(values3);
         var colorIndex = [];
 
         values4 = values3.slice().sort((a, b) => d3.ascending(a, b))
-        console.log(values4);
+        //console.log(values4);
         values4.forEach(function(d, i){
             for (var x = 0; x < 5; x++){
                 if (d == values3[x]){
                     colorIndex.splice(x, 0, i);
-                    console.log(i)
-                    console.log(colorIndex)
+                    //console.log(i)
+                    //console.log(colorIndex)
 
                 }
             }
         });
-        console.log(colorIndex);
+        //console.log(colorIndex);
 
         var highIndex = colorIndex.indexOf(0);
         var lowIndex = colorIndex.indexOf(4);
@@ -290,9 +290,9 @@ function updateVisualization() {
         //boxes.exit().remove();
         draw2();
 
-        console.log(colorIndex);
-        console.log(values3);
-        console.log(values4);
+        //console.log(colorIndex);
+        //console.log(values3);
+        //console.log(values4);
         function draw2(){
             //boxes2 = d3.select("#chart-area2").select("svg").selectAll("rect")
                // .data(values3);
@@ -364,7 +364,7 @@ function updateVisualization() {
                             }
                         }
                         else{
-                            console.log("C: " + selectedBox);
+                            //console.log("C: " + selectedBox);
                             return "C: " + surveyV[0][indexQ].C.answer_text;
                         }
                     }
@@ -379,7 +379,7 @@ function updateVisualization() {
                             }
                         }
                         else{
-                            console.log("D: " + selectedBox);
+                            //console.log("D: " + selectedBox);
                             return "D: " + surveyV[0][indexQ].D.answer_text;
                         }
                     }
@@ -394,7 +394,7 @@ function updateVisualization() {
                             }
                         }
                         else{
-                            console.log("E: " + selectedBox);
+                            //console.log("E: " + selectedBox);
                             return "E: " + surveyV[0][indexQ].E.answer_text;
                         }
                     }
@@ -406,7 +406,7 @@ function updateVisualization() {
         function draw3(){
             //boxes2 = d3.select("#chart-area2").select("svg").selectAll("rect")
             // .data(values3);
-            console.log("draw3");
+            //console.log("draw3");
             d3.selectAll(".textBox").remove();
             //setTimeout(1000);
             boxes.enter().append("foreignObject")
@@ -462,10 +462,5 @@ function updateVisualization() {
 
 }
 
-console.log("here?")
-function reD(){
-    console.log("redraw2");
-    updateVisualization();
+//console.log("here?")
 
-    reDraw = false;
-}
