@@ -15,8 +15,12 @@ h2 {
     font-size: 30px;
     margin-bottom: 30px;
     color: #524F6C;
+    display:inline-block;
 }
 
+legend {
+    display:inline-block;
+}
 /*************/
 /*    FORM   */
 /*************/
@@ -64,7 +68,7 @@ h2 {
 }
 
 .axis {
-    font: 10px sans-serif;
+    font: 15px sans-serif;
     fill: #333;
 }
 
@@ -86,4 +90,16 @@ h2 {
 
 .x-axis path {
     display: none;
+}
+
+
+.flexBox {
+    display: flex;
+}
+
+.flexBox > div {
+    padding: 30px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    font-size: 30px;
 }

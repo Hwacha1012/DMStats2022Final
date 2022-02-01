@@ -31,7 +31,7 @@ Object.defineProperty(window, 'data', {
 // Step 1: Define an SVG drawing area with our margin conventions. Append
 // the drawing area to the div with id chart-area2
 var padding = 20;
-var height = 240;
+var height = 300;
 var width = 1000;
 
 var margin = {top: 30, right: 30, left: 30, bottom: 50};
@@ -60,6 +60,7 @@ svgSchools = d3.select("#chart-area2").append("svg")
 var barScale = d3.scaleLinear();
 var myColor = d3.scaleLinear().domain([0,4]).range(["#D7525B", "white"]);
 
+var myColor2 = d3.scaleLinear().domain([0,100]).range(["#D7525B", "white"]);
 //console.log(`data/${curr_School}MatchData.csv`);
 
 function loadData() {
@@ -93,6 +94,57 @@ function loadData() {
 
 var selectedBox = 0;
 var reDraw = false;
+
+
+//for drawing scaale
+scale = d3.scaleBand();
+scale.domain(["More Matches", "Fewer Matches"])
+    .range([0, 230]);
+axis = d3.axisBottom().scale(scale);
+
+var colors = [ '#D7525B', 'rgb(255,255,255)' ];
+
+var svg = d3.select('#legend')
+    .append('svg')
+    .attr('width', 250)
+    .attr('height', 60);
+
+var grad = svg.append('defs')
+    .append('linearGradient')
+    .attr('id', 'grad')
+    .attr('x1', '0%')
+    .attr('x2', '100%')
+    .attr('y1', '0%')
+    .attr('y2', '0%');
+
+grad.selectAll('stop')
+    .data(colors)
+    .enter()
+    .append('stop')
+    .style('stop-color', function(d){ return d; })
+    .attr('offset', function(d,i){
+        return 100 * (i / (colors.length - 1)) + '%';
+    })
+
+svg.append('rect')
+    .attr('x', 1)
+    .attr('y', 25)
+    .attr('width', 230)
+    .attr('height', 25)
+    .attr("stroke", "black")
+    .attr("stroke-width", 1)
+    .style('fill', 'url(#grad)');
+svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(1, 0)")
+    .call(axis);
+
+
+
+
+
+
+
 // Render visualization
 function updateVisualization() {
     // survey = window.survey2;
@@ -155,11 +207,29 @@ function updateVisualization() {
         colorIndex[highIndex] = 3;
         colorIndex[lowIndex] = 1;
 
+        var letter;
+        if (colorIndex.indexOf(4) == 0){
+            letter = "A";
+        }
+        else if (colorIndex.indexOf(4) == 1){
+            letter = "B";
+        }
+        else if (colorIndex.indexOf(4) == 2){
+            letter = "C";
+        }
+        else if (colorIndex.indexOf(4) == 3){
+            letter = "D";
+        }
+        else if (colorIndex.indexOf(4) == 4){
+            letter = "E";
+        }
 
-        console.log(colorIndex);
+
+        //
+        //console.log(colorIndex);
         //var inForeign = false;
 
-        console.log(values4);
+        //console.log(values4);
 
         /*
         while (reDraw){
@@ -193,46 +263,147 @@ function updateVisualization() {
             .attr("stroke", "black")
             .attr("stroke-width", 3)
             .on('mouseover', function(d, i) {
-                //console.log("in")
                 selectedBox = i+1;
-                //reDraw = true;
-                //updateVisualization();
-
                 d3.select(this)
-                    .transition()
+                    .transition().duration(50)
                     .attr("width", 200)
-                    .attr("height", 300);
+                    .attr("height", 350);
+                //setTimeout(1000);
                 draw2();
-                //updateVisualization2();
-
-                //d3.selectAll(".textBox").remove()
-                //d3.selectAll(".textBox").update
 
 
 
-                //.attr("x", function(d,i){ return ((i) * 250) + 3});
-                //reD();
-                // setTimeout(100);
-                // reD();
             })
             .on('mouseout', function(d, i) {
-                //console.log("out")
-                //setTimeout(10000);
+
                 selectedBox = 0;
                 d3.select(this)
                     .transition()
                     .attr("width", 200)
                     .attr("height", 200);
+                draw3();
 
-                draw2();
 
-
-                //.attr("x", function(d,i){ return ((i) * 250) + 3});
             });
-        boxes.exit().remove();
+        //boxes.exit().remove();
         draw2();
 
+        console.log(colorIndex);
+        console.log(values3);
+        console.log(values4);
         function draw2(){
+            //boxes2 = d3.select("#chart-area2").select("svg").selectAll("rect")
+               // .data(values3);
+            //
+            boxes.enter().append("foreignObject")
+                .merge(boxes)
+                .attr("height", function(d,i){
+                    if (i+1 == selectedBox){
+                        return 350-2*padding;
+                    }
+                    return 200-2*padding;
+                })
+                .attr("width", 200-2*padding)
+                .attr("x", function(d,i){ return (i) * 200 + padding})
+                .attr("y", padding)
+                .attr("fill", "none")
+                .style("pointer-events", "none")
+                .append("xhtml:body")
+                .attr("class", "textBox")
+                .style("font", "18px 'Helvetica Neue'")
+                .style("color", "black")
+                .style("background-color", function(d, i){ return myColor(colorIndex[i])})
+                .html(function(d, i) {
+                    if (i == 0){
+                        //console.log("i is 0?")
+                        if (selectedBox == 1){
+                            //console.log("hi")
+                            if (colorIndex[i] == 4){
+                                return "A: " + surveyV[0][indexQ].A.answer_text + "<br> <br> " + "Users who chose this response received on average, fewer matches than users who chose other responses.";
+                            }
+                            else{
+                                return "A: " + surveyV[0][indexQ].A.answer_text + "<br> <br> " + "Users who chose this response got on average, " + Number((values3[i]/values4[0]).toFixed(3)) + "x the matches of users who chose option " + letter + ", which had the fewest matches.";
+                            }
+
+                        }
+                        else{
+                            //console.log("A: " + selectedBox);
+                            return "A: " + surveyV[0][indexQ].A.answer_text;
+                        }
+
+                    }
+                    else if (i == 1){
+                        if (selectedBox == 2){
+                            //console.log("hi")
+
+                            if (colorIndex[i] == 4){
+                                return "B: " + surveyV[0][indexQ].B.answer_text + "<br> <br> " + "Users who chose this response received on average, fewer matches than users who chose other responses.";
+                            }
+                            else{
+                                return "B: " + surveyV[0][indexQ].B.answer_text + "<br> <br> " + "Users who chose this response got on average, " + Number((values3[i]/values4[0]).toFixed(3)) + "x the matches of users who chose option " + letter + ", which had the fewest matches.";
+                            }
+                        }
+                        else{
+                            //console.log("B: " + selectedBox);
+                            return "B: " + surveyV[0][indexQ].B.answer_text;
+                        }
+
+                    }
+                    else if (i == 2){
+                        if (selectedBox == 3){
+                            //console.log("hi")
+                            if (colorIndex[i] == 4){
+                                return "C: " + surveyV[0][indexQ].C.answer_text + "<br> <br> " + "Users who chose this response received on average, fewer matches than users who chose other responses.";
+                            }
+                            else{
+                                return "C: " + surveyV[0][indexQ].C.answer_text + "<br> <br> " + "Users who chose this response got on average, " + Number((values3[i]/values4[0]).toFixed(3)) + "x the matches of users who chose option " + letter + ", which had the fewest matches.";
+                            }
+                        }
+                        else{
+                            console.log("C: " + selectedBox);
+                            return "C: " + surveyV[0][indexQ].C.answer_text;
+                        }
+                    }
+                    else if (i == 3){
+                        if (selectedBox == 4){
+                            //console.log("hi")
+                            if (colorIndex[i] == 4){
+                                return "D: " + surveyV[0][indexQ].D.answer_text + "<br> <br> " + "Users who chose this response received on average, fewer matches than users who chose other responses.";
+                            }
+                            else{
+                                return "D: " + surveyV[0][indexQ].D.answer_text + "<br> <br> " + "Users who chose this response got on average, " + Number((values3[i]/values4[0]).toFixed(3)) + "x the matches of users who chose option " + letter + ", which had the fewest matches.";
+                            }
+                        }
+                        else{
+                            console.log("D: " + selectedBox);
+                            return "D: " + surveyV[0][indexQ].D.answer_text;
+                        }
+                    }
+                    else if (i == 4){
+                        if (selectedBox == 5){
+                            //console.log("hi")
+                            if (colorIndex[i] == 4){
+                                return "E: " + surveyV[0][indexQ].E.answer_text + "<br> <br> " + "Users who chose this response received on average, fewer matches than users who chose other responses.";
+                            }
+                            else{
+                                return "E: " + surveyV[0][indexQ].E.answer_text + "<br> <br> " + "Users who chose this response got on average, " + Number((values3[i]/values4[0]).toFixed(3)) + "x the matches of users who chose option " + letter + ", which had the fewest matches.";
+                            }
+                        }
+                        else{
+                            console.log("E: " + selectedBox);
+                            return "E: " + surveyV[0][indexQ].E.answer_text;
+                        }
+                    }
+                });
+            boxes.exit().remove();
+
+        }
+
+        function draw3(){
+            //boxes2 = d3.select("#chart-area2").select("svg").selectAll("rect")
+            // .data(values3);
+            console.log("draw3");
+            d3.selectAll(".textBox").remove();
             boxes.enter().append("foreignObject")
                 .merge(boxes)
                 .attr("height", function(d,i){
@@ -251,68 +422,29 @@ function updateVisualization() {
                 .style("font", "18px 'Helvetica Neue'")
                 .style("color", "black")
                 .style("background-color", function(d, i){ return myColor(colorIndex[i])})
-
-                //.style("pointer-events", "none")
                 .html(function(d, i) {
                     if (i == 0){
-                        //console.log("i is 0?")
-                        if (selectedBox == 1){
-                            //console.log("hi")
-                            return "A: " + surveyV[0][indexQ].A.answer_text + "<br> <br></br>" + "hi1";
-                        }
-                        else{
-                            //console.log("hey")
-                            return "A: " + surveyV[0][indexQ].A.answer_text;
-                        }
-
+                        //console.log("hi")
+                        return "A: " + surveyV[0][indexQ].A.answer_text;
                     }
                     else if (i == 1){
-                        if (selectedBox == 2){
-                            //console.log("hi")
-                            return "B: " + surveyV[0][indexQ].B.answer_text + "<br> <br></br>" + "hi2";
-                        }
-                        else{
-                            //console.log("hey")
-                            return "B: " + surveyV[0][indexQ].B.answer_text;
-                        }
-
+                        return "B: " + surveyV[0][indexQ].B.answer_text;
                     }
                     else if (i == 2){
-                        if (selectedBox == 3){
-                            //console.log("hi")
-                            return "C: " + surveyV[0][indexQ].C.answer_text + "<br> <br></br>" + "hi3";
-                        }
-                        else{
-                            //console.log("hey")
-                            return "C: " + surveyV[0][indexQ].C.answer_text;
-                        }
+                        return "C: " + surveyV[0][indexQ].C.answer_text;
                     }
                     else if (i == 3){
-                        if (selectedBox == 4){
-                            //console.log("hi")
-                            return "D: " + surveyV[0][indexQ].D.answer_text + "\n" + "hi4";
-                        }
-                        else{
-                            //console.log("hey")
-                            return "D: " + surveyV[0][indexQ].D.answer_text;
-                        }
+                        return "D: " + surveyV[0][indexQ].D.answer_text;
                     }
                     else if (i == 4){
-                        if (selectedBox == 5){
-                            //console.log("hi")
-                            return "E: " + surveyV[0][indexQ].E.answer_text + "\n" + "hi5";
-                        }
-                        else{
-                            //console.log("hey")
-                            return "E: " + surveyV[0][indexQ].E.answer_text;
-                        }
+                        return "E: " + surveyV[0][indexQ].E.answer_text;
                     }
                 });
             boxes.exit().remove();
 
         }
 
-        boxes.exit().remove();
+        //boxes.exit().remove();
         //draw2();
 
     });
