@@ -99,7 +99,7 @@ var reDraw = false;
 //for drawing scale
 scale = d3.scaleBand();
 scale.domain(["More Matches", "Fewer Matches"])
-    .range([0, 230]);
+    .range([-20, 245]);
 axis = d3.axisBottom().scale(scale);
 
 var colors = [ '#D7525B', 'rgb(255,255,255)' ];
@@ -131,7 +131,7 @@ svg.append('rect')
     .attr('y', 25)
     .attr('width', 230)
     .attr('height', 25)
-    .attr("stroke", "black")
+    .attr("stroke", "#1F1717")
     .attr("stroke-width", 1)
     .style('fill', 'url(#grad)');
 svg.append("g")
@@ -260,7 +260,7 @@ function updateVisualization() {
             .attr("x", function(d,i){ return ((i) * 200) + 3})
             .attr("y", 3)
             .attr("fill", function(d, i){ return myColor(colorIndex[i])})
-            .attr("stroke", "black")
+            .attr("stroke", "#1F1717")
             .attr("stroke-width", 3)
             .on('mouseover', function(d, i) {
                 selectedBox = i+1;
@@ -314,7 +314,7 @@ function updateVisualization() {
                 .append("xhtml:body")
                 .attr("class", "textBox")
                 .style("font", "18px 'Helvetica Neue'")
-                .style("color", "black")
+                .style("color", "#1F1717")
                 .style("background-color", function(d, i){ return myColor(colorIndex[i])})
                 .html(function(d, i) {
                     if (i == 0){
@@ -425,7 +425,7 @@ function updateVisualization() {
                 .append("xhtml:body")
                 .attr("class", "textBox")
                 .style("font", "18px 'Helvetica Neue'")
-                .style("color", "black")
+                .style("color", "#1F1717")
                 .style("background-color", function(d, i){ return myColor(colorIndex[i])})
                 .html(function(d, i) {
                     if (i == 0){

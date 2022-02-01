@@ -70,6 +70,7 @@ legend {
 .axis {
     font: 15px sans-serif;
     fill: #333;
+    color: #1F1717;
 }
 
 .axis-title {
@@ -80,8 +81,9 @@ legend {
 .axis path,
 .axis line {
     fill: none;
-    stroke: #333;
+    stroke: none;
     shape-rendering: crispEdges;
+    color: #1F1717;
 }
 
 .x-axis {
@@ -105,4 +107,5 @@ legend {
 }
 .textBox {
     text-align: center;
+    color: #1F1717;
 }
