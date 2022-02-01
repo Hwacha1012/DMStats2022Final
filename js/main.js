@@ -31,7 +31,7 @@ Object.defineProperty(window, 'data', {
 // Step 1: Define an SVG drawing area with our margin conventions. Append
 // the drawing area to the div with id chart-area2
 var padding = 20;
-var height = 300;
+var height = 400;
 var width = 1000;
 
 var margin = {top: 30, right: 30, left: 30, bottom: 50};
@@ -268,7 +268,7 @@ function updateVisualization() {
                     .transition().duration(50)
                     //.transition()
                     .attr("width", 200)
-                    .attr("height", 350);
+                    .attr("height", 400);
                 //setTimeout(10000);
                 draw2();
 
@@ -302,7 +302,7 @@ function updateVisualization() {
                 .merge(boxes)
                 .attr("height", function(d,i){
                     if (i+1 == selectedBox){
-                        return 350-2*padding;
+                        return 400-2*padding;
                     }
                     return 200-2*padding;
                 })
